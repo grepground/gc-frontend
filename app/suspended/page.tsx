@@ -32,7 +32,7 @@ export default function SuspendedPage() {
 
       <button
         type="button"
-        onClick={() => logout()} // Çıkış yaptırıp auth sayfasına fırlatacak güvenli buton
+        onClick={() => logout()} // Safe button that signs the user out and sends them to the auth page
         className="px-6 py-3 bg-chess-surface border border-chess-border/30 hover:border-red-500/30 text-chess-text/80 hover:text-red-400 font-bold text-xs rounded-xl transition-all cursor-pointer uppercase tracking-wider"
       >
         Sign out and return to reality

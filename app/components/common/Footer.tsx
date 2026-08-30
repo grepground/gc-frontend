@@ -87,7 +87,7 @@ export default function Footer() {
 
   return (
     <footer className="w-full max-w-5xl mx-auto px-3 sm:px-6 py-6 mt-auto">
-      <div className="w-full bg-chess-surface rounded-3xl sm:rounded-full px-6 py-4 sm:py-3 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-black">
+      <div className="w-full bg-chess-surface rounded-3xl sm:rounded-full px-6 py-4 sm:py-3 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-black animate-[fade-up_0.6s_ease-out_0.15s]">
         {/* Brand */}
         <Link
           href="/"
@@ -118,7 +118,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.name}
-                className="w-8 h-8 rounded-full bg-chess-bg flex items-center justify-center hover:bg-chess-surface-hover hover:text-chess-primary transition-colors"
+                className="w-8 h-8 rounded-full bg-chess-bg flex items-center justify-center hover:bg-chess-surface-hover hover:text-chess-primary hover:-translate-y-0.5 transition-all duration-200 active:scale-90"
               >
                 <IconComponent className="w-4 h-4" />
               </a>
@@ -126,7 +126,7 @@ export default function Footer() {
           })}
           <a
             href="mailto:contact@grepground.org"
-            className="px-3 py-1.5 rounded-full bg-chess-bg hover:bg-chess-surface-hover text-chess-primary font-mono lowercase transition-colors text-[11px]"
+            className="px-3 py-1.5 rounded-full bg-chess-bg hover:bg-chess-surface-hover text-chess-primary font-mono lowercase transition-all duration-200 active:scale-95 text-[11px]"
           >
             contact@grepground.org
           </a>
@@ -138,6 +138,30 @@ export default function Footer() {
           <span>•</span>
           <span>read, solve & improve 🧩</span>
         </div>
+      </div>
+
+      {/* Legal Links */}
+      <div className="mt-2 flex flex-wrap justify-center items-center gap-x-4 gap-y-1 text-[11px] font-black text-chess-text/40">
+        <Link
+          href="/privacy"
+          className="hover:text-chess-primary transition-colors"
+        >
+          Privacy Policy
+        </Link>
+        <span className="text-chess-text/20">•</span>
+        <Link
+          href="/terms"
+          className="hover:text-chess-primary transition-colors"
+        >
+          Terms of Use
+        </Link>
+        <span className="text-chess-text/20">•</span>
+        <Link
+          href="/cookies"
+          className="hover:text-chess-primary transition-colors"
+        >
+          Cookie Policy
+        </Link>
       </div>
     </footer>
   );

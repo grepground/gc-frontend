@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { apiFetch } from "../../services/api";
+import { deletePost } from "../../services/posts";
 
 interface PostItem {
   id: number;
@@ -40,7 +41,7 @@ export default function ManagePosts() {
   const confirmDeletePost = async () => {
     if (!postIdToDelete) return;
     try {
-      await apiFetch(`/posts/${postIdToDelete}`, { method: "DELETE" });
+      await deletePost(postIdToDelete);
       setPostIdToDelete(null); // Close modal cleanly
       await fetchPosts(); // Reload fresh database rows
     } catch (err: any) {

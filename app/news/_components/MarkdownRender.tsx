@@ -1,5 +1,7 @@
 "use client";
 
+import DOMPurify from "isomorphic-dompurify";
+
 interface MarkdownRenderProps {
   source: string; // The property string accepting clean HTML rich text payloads
 }
@@ -20,6 +22,11 @@ export default function MarkdownRender({ source }: MarkdownRenderProps) {
     );
   };
 
+  // Sanitize the backend HTML before injecting it into the DOM so that any
+  // malicious content (script tags, event handlers, javascript: URLs, etc.) is
+  // stripped out and never executed in our readers' browsers.
+  const sanitizedHtml = DOMPurify.sanitize(injectBackendImagePaths(source));
+
   return (
     <div
       // FIX: Upgraded layout scale to text-lg and amplified spacing parameters to optimize comfortable reading
@@ -30,7 +37,7 @@ export default function MarkdownRender({ source }: MarkdownRenderProps) {
                  [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-6 [&_ul]:opacity-90
                  [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-6 [&_ol]:opacity-90
                  [&_li]:mb-2"
-      dangerouslySetInnerHTML={{ __html: injectBackendImagePaths(source) }}
+      dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
     />
   );
 }

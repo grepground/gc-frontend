@@ -19,6 +19,15 @@ export default function ProfilePage() {
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState<boolean>(false);
   const [isAvatarUploading, setIsAvatarUploading] = useState<boolean>(false);
 
+  // Optimistic preview shown while the new avatar is being processed.
+  const [avatarPreviewUrl, setAvatarPreviewUrl] = useState<string | null>(null);
+  // Cache-buster bumped after each upload so the browser always fetches the fresh image.
+  const [avatarVersion, setAvatarVersion] = useState<number>(0);
+  // Fades/animates the avatar into place once its image has loaded.
+  const [avatarLoaded, setAvatarLoaded] = useState<boolean>(false);
+  // Briefly flashes a success ring on the avatar after a successful upload.
+  const [avatarJustUpdated, setAvatarJustUpdated] = useState<boolean>(false);
+
   const [profileStatus, setProfileStatus] = useState<{
     type: "success" | "error";
     msg: string;
@@ -59,6 +68,12 @@ export default function ProfilePage() {
     const formData = new FormData();
     formData.append("avatar", file);
 
+    // Optimistic preview: show the selected image instantly while it uploads.
+    const objectUrl = URL.createObjectURL(file);
+    setAvatarPreviewUrl(objectUrl);
+    setAvatarLoaded(false);
+    setAvatarJustUpdated(false);
+
     try {
       setIsAvatarUploading(true);
       setProfileStatus(null);
@@ -72,16 +87,28 @@ export default function ProfilePage() {
         type: "success",
         msg: "Profile picture updated successfully!",
       });
+
+      // Refresh the user so the server-side avatar filename is picked up. Clear
+      // the optimistic preview, then bump the cache-buster so the browser loads
+      // the brand-new server image with a smooth re-entry.
       await refreshUser();
+      setAvatarPreviewUrl(null);
+      setAvatarLoaded(false);
+      setAvatarVersion((v) => v + 1);
+      setAvatarJustUpdated(true);
+      window.setTimeout(() => setAvatarJustUpdated(false), 1600);
     } catch (err: any) {
       setProfileStatus({
         type: "error",
         msg: err.message || "Failed to upload image.",
       });
+      setAvatarPreviewUrl(null);
     } finally {
       setIsAvatarUploading(false);
       setIsAvatarOptionsModalOpen(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
+      // Revoke the object URL once it is no longer in use after the transition.
+      window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
     }
   };
 
@@ -244,9 +271,12 @@ export default function ProfilePage() {
     .charAt(0)
     .toUpperCase();
 
+  // Server URL with a cache-buster so a fresh image is always fetched after upload.
   const avatarSrc = user.avatar
-    ? `${apiBase}/images/avatars/${user.avatar}`
+    ? `${apiBase}/images/avatars/${user.avatar}?v=${avatarVersion}`
     : null;
+  // While uploading, prefer the optimistic local preview for instant feedback.
+  const displaySrc = avatarPreviewUrl || avatarSrc;
 
   return (
     <div className="space-y-6 py-4 text-chess-text max-w-3xl mx-auto relative">
@@ -270,22 +300,42 @@ export default function ProfilePage() {
         <div className="flex flex-col sm:flex-row items-center gap-6 pb-6 border-b border-chess-bg w-full">
           <div
             onClick={() => setIsAvatarOptionsModalOpen(true)}
-            className="w-20 h-20 rounded-full bg-chess-bg flex items-center justify-center relative overflow-hidden select-none cursor-pointer group/avatar shrink-0"
+            className={`w-20 h-20 rounded-full bg-chess-bg flex items-center justify-center relative overflow-hidden select-none cursor-pointer group/avatar shrink-0 ${
+              avatarJustUpdated
+                ? "animate-[avatar-success-ring_1.6s_ease-out]"
+                : ""
+            }`}
           >
-            {avatarSrc ? (
+            {displaySrc ? (
               <Image
-                src={avatarSrc}
+                key={displaySrc}
+                src={displaySrc}
                 alt={user.username}
                 fill
                 sizes="80px"
-                className="object-cover"
+                className={`object-cover transition-all duration-500 ${
+                  avatarLoaded ? "opacity-100 scale-100" : "opacity-0 scale-90"
+                }`}
                 unoptimized
+                onLoad={() => setAvatarLoaded(true)}
               />
             ) : (
-              <span className="font-black text-2xl text-chess-primary">
+              <span
+                className={`font-black text-2xl text-chess-primary transition-opacity duration-500 ${
+                  avatarLoaded ? "opacity-100" : "opacity-0"
+                }`}
+              >
                 {playerInitial}
               </span>
             )}
+
+            {/* Spin overlay while uploading */}
+            {isAvatarUploading && (
+              <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center pointer-events-none">
+                <div className="w-7 h-7 rounded-full border-2 border-chess-primary/30 border-t-chess-primary animate-spin" />
+              </div>
+            )}
+
             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/avatar:opacity-100 transition-opacity flex items-center justify-center text-[10px] font-black tracking-wider text-chess-text">
               Manage 📷
             </div>
@@ -392,7 +442,7 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      {/* 1. SEÇENEKLER MODALI (Boşa basınca kapanır) */}
+      {/* 1. OPTIONS MODAL (closes when clicking the backdrop) */}
       {isAvatarOptionsModalOpen && (
         <div
           onClick={(e) => {
@@ -416,7 +466,7 @@ export default function ProfilePage() {
             </div>
 
             <div className="space-y-2 pt-1">
-              {avatarSrc && (
+              {displaySrc && (
                 <button
                   type="button"
                   onClick={() => {
@@ -445,8 +495,8 @@ export default function ProfilePage() {
         </div>
       )}
 
-      {/* 2. BÜYÜK GÖRSEL ÖNİZLEME MODALI (Tam Boyut & Boşa basınca kapanır) */}
-      {isPreviewModalOpen && avatarSrc && (
+      {/* 2. LARGE IMAGE PREVIEW MODAL (Full Size & closes when clicking the backdrop) */}
+      {isPreviewModalOpen && displaySrc && (
         <div
           onClick={(e) => {
             if (e.target === e.currentTarget) setIsPreviewModalOpen(false);
@@ -467,10 +517,10 @@ export default function ProfilePage() {
               </button>
             </div>
 
-            {/* Görsel tam oranını korur (object-contain) ve kutuya sığar */}
+            {/* Keeps the image at full aspect ratio (object-contain) and fits it inside the box */}
             <div className="w-full h-[60vh] max-h-[450px] relative rounded-2xl overflow-hidden bg-chess-bg/40">
               <Image
-                src={avatarSrc}
+                src={displaySrc}
                 alt={user.username}
                 fill
                 sizes="(max-width: 768px) 100vw, 500px"
@@ -482,7 +532,7 @@ export default function ProfilePage() {
         </div>
       )}
 
-      {/* 3. YÜKLENİYOR MODALI (Kapatılamaz kilitli ekran) */}
+      {/* 3. UPLOADING MODAL (non-closable locked screen) */}
       {isAvatarUploading && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 z-[60] select-none">
           <div className="bg-chess-surface p-8 rounded-3xl space-y-4 max-w-xs w-full text-center flex flex-col items-center">
@@ -499,7 +549,7 @@ export default function ProfilePage() {
         </div>
       )}
 
-      {/* 4. ŞİFRE MODALI (Boşa basınca kapanır) */}
+      {/* 4. PASSWORD MODAL (closes when clicking the backdrop) */}
       {isPasswordModalOpen && (
         <div
           onClick={(e) => {

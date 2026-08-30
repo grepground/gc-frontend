@@ -135,7 +135,7 @@ function AuthForm() {
   return (
     <div className="max-w-md mx-auto my-8 w-full">
       <div className="bg-chess-surface p-8 md:p-10 rounded-3xl space-y-6">
-        {/* Tombul Kapsül Tab Switcher */}
+        {/* Chubby Pill Tab Switcher */}
         {(mode === "login" || mode === "register") && (
           <div className="grid grid-cols-2 gap-1 bg-chess-bg p-1.5 rounded-full">
             <button
@@ -270,7 +270,7 @@ function AuthForm() {
                 {mode === "login" && (
                   <button
                     type="button"
-                    tabIndex={-1} // Tab sıralamasından çıkarıldı, odaklanmayı engeller
+                    tabIndex={-1} // Removed from tab order, prevents focusing
                     onClick={() => {
                       setMode("forgot-password");
                       setError(null);
@@ -286,7 +286,7 @@ function AuthForm() {
                 type="password"
                 name="password"
                 required
-                tabIndex={0} // Username'den sonra doğrudan buraya odaklar
+                tabIndex={0} // Focuses directly here right after the username field
                 className="w-full bg-chess-bg px-4 py-3 rounded-2xl font-bold text-sm text-chess-text focus:outline-none focus:bg-chess-bg/80 transition-colors"
                 placeholder="••••••••"
               />

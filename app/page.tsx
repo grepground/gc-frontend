@@ -61,7 +61,7 @@ export default function HomePage() {
   return (
     <div className="space-y-12 max-w-5xl mx-auto px-4 sm:px-6 py-8 text-chess-text w-full">
       {/* Early Access Banner - Gentle but noticeable */}
-      <section className="relative overflow-hidden bg-chess-surface p-5 sm:p-7 rounded-3xl text-center sm:text-left border border-chess-primary/10">
+      <section className="relative overflow-hidden bg-chess-surface p-5 sm:p-7 rounded-3xl text-center sm:text-left border border-chess-primary/10 animate-[fade-up_0.6s_ease-out]">
         {/* Soft highlight glow */}
         <div className="pointer-events-none absolute -top-20 -right-20 w-64 h-64 rounded-full bg-chess-primary/10 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-chess-primary/5 blur-3xl" />
@@ -69,7 +69,9 @@ export default function HomePage() {
         <div className="relative space-y-3">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-4">
             <div className="inline-flex items-center gap-2 bg-chess-primary/15 text-chess-primary font-black text-[11px] px-3.5 py-1 rounded-full">
-              <span className="animate-pulse">🚀</span>
+              <span className="inline-block animate-[float-slow_3s_ease-in-out_infinite]">
+                🚀
+              </span>
               <span className="uppercase tracking-wider">
                 early access beta
               </span>
@@ -105,7 +107,7 @@ export default function HomePage() {
         </div>
       </section>
       {/* Hero Header */}
-      <section className="space-y-4 text-center md:text-left">
+      <section className="space-y-4 text-center md:text-left animate-[fade-up_0.6s_ease-out_0.1s]">
         <div className="inline-flex items-center gap-2 bg-chess-primary/10 text-chess-primary font-black text-xs px-4 py-2 rounded-full">
           <span>♟️</span>
           <span>a friendly place for chess fans</span>
@@ -162,7 +164,7 @@ export default function HomePage() {
             {featuredPost && (
               <Link
                 href={`/news/${featuredPost.slug}`}
-                className="bg-chess-surface p-6 md:p-8 rounded-3xl flex flex-col md:flex-row gap-8 items-stretch hover:bg-chess-surface-hover transition-colors group cursor-pointer block"
+                className="bg-chess-surface p-6 md:p-8 rounded-3xl flex flex-col md:flex-row gap-8 items-stretch hover:bg-chess-surface-hover hover:-translate-y-1 transition-all duration-300 ease-out group cursor-pointer block"
               >
                 <div className="w-full md:w-80 h-56 md:h-auto rounded-2xl overflow-hidden bg-chess-bg relative shrink-0">
                   <Image
@@ -174,7 +176,7 @@ export default function HomePage() {
                     alt={featuredPost.title}
                     fill
                     sizes="(max-width: 768px) 100vw, 320px"
-                    className="object-cover object-center"
+                    className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
                     unoptimized
                   />
                 </div>
@@ -220,7 +222,7 @@ export default function HomePage() {
                   <Link
                     key={post.id}
                     href={`/news/${post.slug}`}
-                    className="bg-chess-surface p-6 rounded-3xl space-y-4 hover:bg-chess-surface-hover transition-colors group cursor-pointer flex flex-col justify-between"
+                    className="bg-chess-surface p-6 rounded-3xl space-y-4 hover:bg-chess-surface-hover hover:-translate-y-1 transition-all duration-300 ease-out group cursor-pointer flex flex-col justify-between"
                   >
                     <div className="space-y-3">
                       <div className="w-full h-44 rounded-2xl overflow-hidden bg-chess-bg relative">
@@ -233,7 +235,7 @@ export default function HomePage() {
                           alt={post.title}
                           fill
                           sizes="(max-width: 768px) 100vw, 400px"
-                          className="object-cover object-center"
+                          className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
                           unoptimized
                         />
                       </div>

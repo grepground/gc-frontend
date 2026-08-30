@@ -1,6 +1,6 @@
 import React from "react";
 
-// Sosyal Medya SVG İkon Bileşenleri
+// Social Media SVG Icon Components
 function YoutubeIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" {...props}>

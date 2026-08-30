@@ -44,3 +44,140 @@ body {
         transform: translateX(200%);
     }
 }
+
+/* Burst ring that flashes around the avatar after a successful profile-image upload. */
+@keyframes avatar-success-ring {
+    0% {
+        box-shadow: 0 0 0 0 rgba(78, 132, 84, 0.75);
+    }
+    100% {
+        box-shadow: 0 0 0 16px rgba(78, 132, 84, 0);
+    }
+}
+
+/* --- Flat, shadow-free motion for the header (no box-shadows anywhere) --- */
+
+/* Header pill slides down and settles on page mount */
+@keyframes header-entrance {
+    0% {
+        opacity: 0;
+        transform: translateY(-18px) scale(0.985);
+    }
+    60% {
+        opacity: 1;
+        transform: translateY(2px) scale(1.002);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Dropdown / nav menu pop-in */
+@keyframes menu-pop {
+    0% {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.96);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Single dropdown link slide-in (used for a light stagger) */
+@keyframes menu-item-slide {
+    0% {
+        opacity: 0;
+        transform: translateX(-8px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Scroll-to-top button pop-in */
+@keyframes scroll-top-pop {
+    0% {
+        opacity: 0;
+        transform: translateY(10px) scale(0.6);
+    }
+    60% {
+        opacity: 1;
+        transform: translateY(-2px) scale(1.06);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* --- Flat, reusable motion helpers used across pages (no box-shadows anywhere) --- */
+
+/* Generic entrance: content floats up while fading in */
+@keyframes fade-up {
+    0% {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Generic entrance: fade in only */
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Generic entrance: scale in from slightly smaller */
+@keyframes scale-in {
+    0% {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Gentle levitation for decorative accents (rocket, floats, etc.) */
+@keyframes float-slow {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+/* Soft shimmer sweep for progress bars and loaders */
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}

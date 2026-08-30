@@ -11,11 +11,11 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "grepground.org", // Canlı ortam için
+        hostname: "grepground.org", // For the live environment
       },
       {
         protocol: "https",
-        hostname: "*.grepground.org", // Subdomain'ler için
+        hostname: "*.grepground.org", // For subdomains
       },
     ],
   },

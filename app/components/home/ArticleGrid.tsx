@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 interface ArticleMock {
   id: number;
@@ -13,34 +13,36 @@ interface ArticleMock {
 const MOCK_ARTICLES: ArticleMock[] = [
   {
     id: 1,
-    title: 'Deep Positional Mechanics in the Czech Defense',
-    category: 'Opening Theory',
-    excerpt: 'An elite technical breakdown of the Czech Defense structural resilience against aggressive kingside pawn storms.',
-    date: 'JUL 06, 2026',
-    readTime: '5 MIN READ',
+    title: "Deep Positional Mechanics in the Czech Defense",
+    category: "Opening Theory",
+    excerpt:
+      "An elite technical breakdown of the Czech Defense structural resilience against aggressive kingside pawn storms.",
+    date: "JUL 06, 2026",
+    readTime: "5 MIN READ",
   },
   {
     id: 2,
-    title: 'The Neurology of Chess Performance under Time Pressure',
-    category: 'Cognitive Science',
-    excerpt: 'Examining cortisol levels and pattern recognition neural pathways during deep calculation in critical blitz tiebreaks.',
-    date: 'JUL 02, 2026',
-    readTime: '8 MIN READ',
+    title: "The Neurology of Chess Performance under Time Pressure",
+    category: "Cognitive Science",
+    excerpt:
+      "Examining cortisol levels and pattern recognition neural pathways during deep calculation in critical blitz tiebreaks.",
+    date: "JUL 02, 2026",
+    readTime: "8 MIN READ",
   },
   {
     id: 3,
-    title: 'Optimizing Stockfish 17 Evaluation Trees on Local Linux Hardware',
-    category: 'Systems & Tech',
-    excerpt: 'How to correctly configure multi-threading, hash tables, and ryzenadj profiles on AMD Zen3 processors for deep game analysis.',
-    date: 'JUN 28, 2026',
-    readTime: '6 MIN READ',
+    title: "Optimizing Stockfish 17 Evaluation Trees on Local Linux Hardware",
+    category: "Systems & Tech",
+    excerpt:
+      "How to correctly configure multi-threading, hash tables, and ryzenadj profiles on AMD Zen3 processors for deep game analysis.",
+    date: "JUN 28, 2026",
+    readTime: "6 MIN READ",
   },
 ];
 
 export default function ArticleGrid() {
   return (
     <div className="space-y-8 text-chess-text">
-      
       {/* Section Sub-Header Context */}
       <div className="flex justify-between items-center border-b-2 border-chess-text pb-4">
         <h2 className="text-xl font-black uppercase tracking-tight">
@@ -54,9 +56,9 @@ export default function ArticleGrid() {
       {/* Responsive Structural Cards Grid Layout */}
       <div className="grid md:grid-cols-3 gap-6">
         {MOCK_ARTICLES.map((article) => (
-          <article 
+          <article
             key={article.id}
-            className="border-2 border-chess-text bg-chess-surface p-6 rounded-2xl flex flex-col justify-between space-y-4 transition-transform duration-150 active:scale-[0.99]"
+            className="border-2 border-chess-text bg-chess-surface p-6 rounded-2xl flex flex-col justify-between space-y-4 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-chess-primary active:scale-[0.99] animate-[fade-up_0.5s_ease-out]"
           >
             {/* Top Identity Meta Layer */}
             <div className="space-y-2">
@@ -85,19 +87,17 @@ export default function ArticleGrid() {
               <div className="text-[10px] font-black tracking-wider opacity-40">
                 PUBLISHED: {article.date}
               </div>
-              
-              <a 
+
+              <a
                 href={`/news/${article.id}`}
-                className="w-full border-2 border-chess-text text-center font-black py-2.5 rounded-xl hover:bg-chess-text hover:text-chess-surface bg-chess-bg text-chess-text transition-colors uppercase tracking-wider text-xs cursor-pointer block"
+                className="w-full border-2 border-chess-text text-center font-black py-2.5 rounded-xl hover:bg-chess-text hover:text-chess-surface hover:border-chess-text bg-chess-bg text-chess-text transition-all duration-200 active:scale-[0.98] uppercase tracking-wider text-xs cursor-pointer block"
               >
                 Analyze Line →
               </a>
             </div>
-
           </article>
         ))}
       </div>
-
     </div>
   );
 }

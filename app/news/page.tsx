@@ -198,7 +198,7 @@ export default function NewsPage() {
               <Link
                 key={post.id}
                 href={`/news/${post.slug}`}
-                className="bg-chess-surface p-6 md:p-8 rounded-3xl flex flex-col md:flex-row gap-8 items-stretch hover:bg-chess-surface-hover transition-colors group cursor-pointer block"
+                className="bg-chess-surface p-6 md:p-8 rounded-3xl flex flex-col md:flex-row gap-8 items-stretch hover:bg-chess-surface-hover hover:-translate-y-1 transition-all duration-300 ease-out group cursor-pointer block"
               >
                 {/* Cover Image with default SVG fallback */}
                 <div className="w-full md:w-80 h-56 md:h-auto rounded-2xl overflow-hidden bg-chess-bg relative shrink-0">
@@ -211,7 +211,7 @@ export default function NewsPage() {
                     alt={post.title}
                     fill
                     sizes="(max-width: 768px) 100vw, 320px"
-                    className="object-cover object-center"
+                    className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
                     unoptimized
                   />
                 </div>

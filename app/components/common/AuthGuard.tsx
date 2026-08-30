@@ -15,19 +15,19 @@ export default function GlobalSuspensionGuard({
 
   useEffect(() => {
     if (!loading && user) {
-      // FIX: Eğer kullanıcının isActive değeri false ise ve zaten suspended sayfasında DEĞİLSE önünü kes!
+      // FIX: If the user's isActive is false and they are NOT already on the suspended page, block them!
       if (user.isActive === false && pathname !== "/suspended") {
         router.replace("/suspended");
       }
 
-      // Eğer kullanıcı aktifse ama manuel olarak /suspended sayfasına gitmeye çalışıyorsa onu ana sayfaya kurtar
+      // If the user is active but manually tries to visit /suspended, send them back home
       if (user.isActive === true && pathname === "/suspended") {
         router.replace("/");
       }
     }
   }, [user, loading, pathname, router]);
 
-  // Eğer kullanıcı cezalıysa ve başka sayfaları render etmeye çalışıyorsa ekranı sızıntılara karşı kilitle
+  // If the user is penalized and tries to render other pages, lock the screen against leaks
   if (
     !loading &&
     user &&
